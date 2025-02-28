@@ -1,3 +1,6 @@
+<?php
+ ob_start();
+?>
 <!DOCTYPE html>
     <html lang="en">
         <head>
@@ -57,22 +60,95 @@
                 </div>
             </div>
             </nav>
-            <div class="container1 text-center" >
-                <h1 class="display-4" style="font-family:'Apes On Parade', sans-serif; color: #0d8eb2;">Meter Datos</h1>
+
+            <style>
+                .container1{
+                    justify-content: center;
+                    align-items: center;
+                    width: 50%;
+                    background-color: #0d8eb2;
+                    padding: 20px;
+                    border-radius: 10px;
+                    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+                    color: black;
+                }
+                h1{
+                    font-family:'Apes On Parade', sans-serif;
+                    text-align: center;
+                    color: #0d8eb2;
+                    margin-bottom: 15px;  
+                }
+                form{
+                    display: flex;
+                    flex-direction: column;
+                }
+                label{
+                    font-size: 16px;
+                    margin-bottom: 5px;
+                }
+                input[type= "text"] {
+                    padding: 8px;
+                    margin-bottom: 10px;
+                    border: none;
+                    border-radius: 5px;
+                    font-size: 16px;
+                    background-color: white;
+                    color: #black;
+                }
+                input [type="submit"]{
+                    padding: 10px;
+                    background-color:black;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    transition: background 0.3s;
+                }
+                input[type="submit"]: hover {
+                    background-color: black;
+                }
+                //tabla//
+                table{
+                            width:100%;
+                            border-collapse: collapse;
+                            margin-top: 50px;
+                            border-radius: 50px;
+                        }
+                        th, td{
+                            padding: 10px;
+                            text-align:left;
+                            border-bottom: 1px solid #ddd;
+                        }
+                        tr:nth-child(even){
+                            background-color: pink;
+                            color: black;
+                        }
+                        tr:nth-child(odd){
+                            background-color: white;
+                            color: black;
+                        }
+                        th{
+                            background-color: #84c047;
+                            color: white;
+                        }
+            </style>
+            
+            <h1>Meter Datos</h1>
+
+            <div class="container1" >
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" id="formulario">
                    <label for="Pelicula">Pelicula</label>
-                   <input type="text" id="Pelicula" name="Pelicula" requiered><br>
+                   <input type="text" id="Pelicula" name="Pelicula" required><br>
                    <label for="Año">Año</label>
-                   <input type="text" id="Año" name="Año" requiered><br>
+                   <input type="text" id="Año" name="Año" required><br>
                    <label for="Subgenero">Subgenero</label>
-                   <input type="text" id="Subgenero" name="Subgenero" requiered><br>
+                   <input type="text" id="Subgenero" name="Subgenero" required><br>
                    <label for="Calificacion">Calificacion</label>
-                   <input type="text" id="Calificacion" name="Calificacion" requiered><br>
+                   <input type="text" id="Calificacion" name="Calificacion" required><br>
                    <label for="Clasificacion">Clasificacion</label>
-                   <input type="text" id="Clasificacion" name="Clasificacion" requiered><br>
+                   <input type="text" id="Clasificacion" name="Clasificacion" required><br>
                     
                    <input type="submit" value="Agregar registro">
                 </form>
+            </div>
 
                 <?php
                 $username = "root";
@@ -84,25 +160,47 @@
                 if ($conexion->connect_error) {
                     die("Conexion Fallida: " . $conexion->connect_error);
                 }
+
+                function insertarPelicula ($conexion){//nueva linea
+
                 if($_SERVER["REQUEST_METHOD"]=="POST"){
+                    var_dump($_POST);//nueva linea
                     //Se obtienen los datos del formulario
-                    $Nombre = $_POST["Pelicula"]; //tal caul aparece en subase de datos lo que va en comillas
-                    $Nombre = $_POST["Año"];
-                    $Nombre = $_POST["Subgenero"];
-                    $Nombre = $_POST["Calificacion"];
-                    $Nombre = $_POST["Clasificacion"];
+                    $Nombre = $conexion->real_escape_string ($_POST["Pelicula"]); //tal caul aparece en subase de datos lo que va en comillas
+                    $Nombre = $conexion->real_escape_string ($_POST["Año"]);
+                    $Nombre = $conexion->real_escape_string ($_POST["Subgenero"]);
+                    $Nombre = $conexion->real_escape_string ($_POST["Calificacion"]);
+                    $Nombre = $conexion->real_escape_string ($_POST["Clasificacion"]);
                     
-                    $sql = "INSERT INTO Personajes (Pelicula, Año, Subgenero, Calificacion, Clasificacion) VALUES ($Pelicula, $Año, $Subgenero, $Calificacion, $Clasificacion)";
-                    if($conexion->query[$sql]==TRUE){
+                    $sql = "INSERT INTO peliculas (Pelicula, Año, Subgenero, Calificacion, Clasificacion) VALUES ('$Pelicula', '$Año', '$Subgenero', '$Calificacion', '$Clasificacion')";
+                    if($conexion->query($sql)==TRUE){
                         echo "<p class='success'>Nuevo pelicula agregada con exito. </p>";
+                        header ("Location: " . $_SERVER['PHP_SELF']);
+                        exit();//nuevas 2 filas
                     }else{
                         echo "<p class='error'>Error al agregar la pelicula: " . $conexion->error . "</p>";
                     }
                 }
+            } insertarPelicula($conexion);
+                //mostrar datos de la tabla
+                $sql = "SELECT * FROM peliculas ORDER BY id DESC";
+                $resultado = $conexion -> query ($sql);
                 ?>
-
+                <h2>Registros ingresados</h2>
+     
+                            <?php 
+                            if ($resultado-> num_rows >0){
+                                echo "<table class='table table-bordered'>";
+                                echo "<tr><th>Id</th><th>Pelicula</th><th>Año</th><th>Subgenero</th><th>Calificacion</th><th>Clasificacion</th></tr>";
+                                while($row = $resultado->fetch_assoc()){
+                                    echo "<tr><td>" . $row ["Id"] . "</td><td>" . $row ["Pelicula"] . "</td><td>" . $row ["Año"] . "</td><td>" . $row ["Subgenero"] . "</td><td>" . $row ["Calificacion"] . "</td><td>" . $row ["Clasificacion"] . "</td></tr>";
+                                }
+                        }else{
+                            echo "<p>No se encontraron registros en la base de datos. </p>";
+                        }
+                        $conexion-> close ();
+                        ?>
+                 </table>
                     
-                    
-            </div>
         </body>
     </html>
