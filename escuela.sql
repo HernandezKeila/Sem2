@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 06-03-2025 a las 20:23:19
+-- Tiempo de generación: 08-03-2025 a las 04:56:10
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.1.25
 
@@ -37,10 +37,17 @@ CREATE TABLE `alumnos` (
   `id_colonia` int(11) NOT NULL,
   `id_especialidad` int(11) NOT NULL,
   `id_genero` int(11) NOT NULL,
-  `correo` varchar(15) DEFAULT NULL,
+  `correo` varchar(30) DEFAULT NULL,
   `telefono` varchar(15) DEFAULT NULL,
   `fecha_ingreso` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `alumnos`
+--
+
+INSERT INTO `alumnos` (`id`, `numero_control`, `nombre`, `apellido_paterno`, `apellido_materno`, `id_edad`, `id_colonia`, `id_especialidad`, `id_genero`, `correo`, `telefono`, `fecha_ingreso`) VALUES
+(1, '23321', 'Keila Zeret', 'Hernández ', 'León', 6, 3, 1, 2, 'keileon@email.com', '8992563520', '2023-08-28');
 
 -- --------------------------------------------------------
 
@@ -195,7 +202,7 @@ ALTER TABLE `generos`
 -- AUTO_INCREMENT de la tabla `alumnos`
 --
 ALTER TABLE `alumnos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `colonias`
