@@ -145,7 +145,7 @@
             </style>
             
             <div class="jumbotron">
-            <h1 class="display-4" style="font-family:'Apes On Parade',sans-serif; font-size: 40px ; color: #0d8eb2;">PAGINA DE MOSTRAR DATOS RELACIONADOS</h1>
+            <h1 class="display-4" style="font-family:'Apes On Parade',sans-serif; font-size: 40px ; color: black;">PAGINA DE MOSTRAR DATOS RELACIONADOS</h1>
 
             <div class="container1">
             <form method="POST" id="formulario">
@@ -157,20 +157,20 @@
                 <input type="text" id="apellido_paterno" name="apellido_paterno" required><br>
                 <label for="apellido_materno">Apellido materno:</label>
                 <input type="text" id="apellido_materno" name="apellido_materno" required><br>
-                <label for="id_edad">Edad:</label>
-                <input type="number" id="id_edad" name="id_edad" required><br>
-                <label for="id_colonia">Colonia:</label>
-                <input type="text" id="id_colonia" name="id_colonia" required><br>
-                <label for="id_especialidad">Especialidad:</label>
-                <input type="text" id="id_especialidad" name="id_especialidad" required><br>
-                <label for="id_genero">Genero:</label>
-                <input type="text" id="id_genero" name="id_genero" required><br>
+                <label for="edad">Edad:</label>
+                <input type="number" id="edad" name="edad" required><br>
+                <label for="colonia">Colonia:</label>
+                <input type="text" id="colonia" name="colonia" required><br>
+                <label for="especialidad">Especialidad:</label>
+                <input type="text" id="especialidad" name="especialidad" required><br>
+                <label for="genero">Genero:</label>
+                <input type="text" id="genero" name="genero" required><br>
                 <label for="correo">Correo:</label>
                 <input type="text" id="correo" name="correo" required><br>
                 <label for="telefono">Telefono:</label>
                 <input type="text" id="telefono" name="telefono" required><br>
                 <label for="fecha_ingreso">Fecha ingreso:</label>
-                <input type="text" id="fecha_ingreso" name="fecha_ingreso" required><br>
+                <input type="date" id="fecha_ingreso" name="fecha_ingreso" required><br>
                 
                 <input type="submit" value="Agregar Registro">
             </form>
@@ -189,9 +189,38 @@
                 if ($conexion->connect_error) {
                     die("Conexion Fallida: " . $conexion->connect_error);
                 }
+                function insertarAlumno($conexion) //agrego esto, el jueves-------------------------------------------------------------
+                {
+                    if($_SERVER["REQUEST_METHOD"]=="POST"){
+                        var_dump($_POST);//nueva linea
+                        //Se obtienen los datos del formulario
+                        $numero_control = $conexion->real_escape_string ($_POST["numero_control"]); //tal caul aparece en subase de datos lo que va en comillas
+                        $nombre = $conexion->real_escape_string ($_POST["nombre"]);
+                        $apellido_paterno = $conexion->real_escape_string ($_POST["apellido_paterno "]);
+                        $apellido_materno = $conexion->real_escape_string ($_POST["apellido_materno "]);
+                        $edad = $conexion->real_escape_string ($_POST["edad"]);
+                        $colonia = $conexion->real_escape_string ($_POST["colonia"]);
+                        $especialidad = $conexion->real_escape_string ($_POST["especialidad"]);
+                        $genero = $conexion->real_escape_string ($_POST["genero"]);
+                        $correo = $conexion->real_escape_string ($_POST["correo"]);
+                        $telefono = $conexion->real_escape_string ($_POST["telefono"]);
+                        $fecha_ingreso = $conexion->real_escape_string ($_POST["fecha_ingreso"]);
+                        
+                        $sql = "INSERT INTO alumnos (numero_control, nombre, apellido_paterno, apellido_materno, edad, colonia, especialidad, genero, correo, telefono, fecha_ingreso) 
+                        VALUES ('$numero_control', '$nombre', '$apellido_paterno', '$apellido_materno', '$edad', '$colonia', '$especialidad', '$genero', '$correo', '$telefono', '$fecha_ingreso')";
 
+                        if($conexion->query($sql)==TRUE){
+                            echo "<p class='success'> Agregada con exito. </p>"; //esto lo quito Ivette
+                            header ("Location: " . $_SERVER['PHP_SELF']);
+                            exit();//nuevas 2 filas
+                        }else{
+                            echo "<p class='error'>Error al agregar la pelicula: " . $conexion->error . "</p>";
+                        }
+                    }
+                }
                         $conexion-> close ();
-                        ?>
+                ?>
+
                         </div>
                     </div>
              </table><!--este y div no lo tiene el profe-->
