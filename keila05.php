@@ -210,13 +210,41 @@
                         VALUES ('$numero_control', '$nombre', '$apellido_paterno', '$apellido_materno', '$edad', '$colonia', '$especialidad', '$genero', '$correo', '$telefono', '$fecha_ingreso')";
 
                         if($conexion->query($sql)==TRUE){
-                            echo "<p class='success'> Agregada con exito. </p>"; //esto lo quito Ivette
+                            echo "<p class='success'> Nuevo alumno agregado con exito. </p>"; //esto lo quito Ivette
                             header ("Location: " . $_SERVER['PHP_SELF']);
                             exit();//nuevas 2 filas
                         }else{
-                            echo "<p class='error'>Error al agregar la pelicula: " . $conexion->error . "</p>";
+                            echo "<p class='error'>Error al agregar al alumno:" . $conexion->error . "</p>";
                         }
                     }
+                }
+
+                insertarAlumno($conexion);
+                //Mostrar datos de la tabla
+                $sql="SELECT * FROM alumnos";
+                $resultado = $conexion -> query ($sql);
+
+                if ($resultado-> num_rows >0){
+                    echo "<table class='table table-bordered'>";
+                    echo "<tr><th>Número de control</th><th>Nombre</th><th>Apellido paterno</th><th>Apellido materno</th><th>Edad</th><th>Colonia</th><th>Especialidad</th><th>Géneros</th><th>Correo</th><th>Teléfono</th><th>Fecha de Ingreso</th></tr>";
+                    while($row = $resultado->fetch_assoc()){
+                        echo "<tr>
+                        <td>" . $row ["numero_control"] . "</td>
+                        <td>" . $row ["nombre"] . "</td>
+                        <td>" . $row ["apellido_paterno"] . "</td>
+                        <td>" . $row ["apellido_materno"] . "</td>
+                        <td>" . $row ["id_edad"] . "</td>
+                        <td>" . $row ["id_colonia"] . "</td>
+                        <td>" . $row ["id_especialidad"] . "</td>
+                        <td>" . $row ["id_genero"] . "</td>
+                        <td>" . $row ["correo"] . "</td>
+                        <td>" . $row ["telefono"] . "</td>
+                        <td>" . $row ["fecha_ingreso"] . "<td>
+                        </tr>";
+                    }
+                    echo "</table>";
+                } else {
+                    echo "<p>No se encontraron registros en la base de datos. </p>";
                 }
                         $conexion-> close ();
                 ?>
