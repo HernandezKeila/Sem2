@@ -12,11 +12,11 @@
         box-sizing: border-box;
     }
     :root{
-        --color-primario: #90a955;
-        --color-secundario: #ffd9da;
-        --color-terciario: #f3e1dd; 
-        --color-cuarto: #cc7178 ;
-        --color-quinto: #d1568d;
+        --color-primario: #1b4965;
+        --color-secundario: #cae9ff;
+        --color-terciario: #5fa8d3; 
+        --color-cuarto: #62b6cb ;
+        --color-quinto: #bee9e8;
     }
     body{
         background-color: var(--color-cuarto);
@@ -30,7 +30,7 @@
         background-color: var(--color-secundario);
     }
     .search{
-        background-color: var(--color-terciario);
+        background-color: var(--color-secundario);
         border: 5px solid var(--color-primario);
         border-radius: 50px;
         font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -39,7 +39,7 @@
         color: black;
     }
     .search::placeholder{
-        color: var(--color-quinto);
+        color: var(--color-primario);
     }
     .search:focus{
         outline: none;
@@ -102,6 +102,12 @@
     }
     </style>
 
+    <header>
+        <form id="form">
+            <img src="logoo.png" alt="logo" style="width: 80px; height: 80px;">
+        <input type="text" id="search" class="search" placeholder="Busca tu pelicula"></form>
+    </header>
+    <main id="main"></main>
     <header>
         <form id="form">
             <img src="logoo.png" alt="logo" style="width: 200px; height: 40px;">
