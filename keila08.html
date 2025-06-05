@@ -7,21 +7,19 @@
     <title>Peliculas API</title>
 </head>
 <body>
-    <!--El profe no tiene nada despues de las dos ultimas comillas, 
-    en el segundo despues del 0-->
     <style>
     *{
         box-sizing: border-box;
     }
     :root{
-        --color-primario: #90a955;
-        --color-secundario: #ffd9da;
-        --color-terciario: #f3e1dd; 
-        --color-cuarto: #cc7178 ;
-        --color-quinto: #d1568d;
+        --color-primario: #1B4965;
+        --color-secundario: #CAE9FF;
+        --color-terciario: #5FA8D3; 
+        --color-cuarto: #5FA8D3 ;
+        --color-quinto: #62B6CB;
     }
     body{
-        background-color: var(--color-cuarto);
+        background-color: var(--color-secundario);
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         margin: 0;
     }
@@ -29,10 +27,10 @@
         padding: 16px;
         display: flex;
         justify-content: flex-end;
-        background-color: var(--color-secundario);
+        background-color: var(--color-cuarto);
     }
     .search{
-        background-color: var(--color-terciario);
+        background-color: var(--color-secundario);
         border: 5px solid var(--color-primario);
         border-radius: 50px;
         font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -55,7 +53,7 @@
     .personaje{
         width: 400px;
         margin: 15px;
-        background-color: var(--secondary-color);
+        background-color: var(--color-cuarto);
         box-shadow: 10px 15px 1px var(--color-primario);
         position: relative;
         overflow:hidden;
@@ -80,7 +78,7 @@
         letter-spacing: 5px;
     }
     .personaje-info h3{
-        color: var(--color-quinto);
+        color: var(--color-secundario);
         margin-top: 0;
     }
     .personaje-info h1{
@@ -106,7 +104,7 @@
 
     <header>
         <form id="form">
-            <img src="logoo.png" alt="logo" style="width: 200px; height: 40px;">
+            <img src="logoo.png" alt="logo" style="width: 80px; height: 80px;">
         <input type="text" id="search" class="search" placeholder="Busca tu pelicula"></form>
     </header>
     <main id="main"></main>
@@ -145,7 +143,7 @@
                             <p><strong>Max Ki: </strong> ${maxKi}</p>
                             ${description}
                             </div>` 
-                    main.appendChild(charElements);
+                    main.appendChild(charElement);
             }) }
                 form.addEventListener('submit', (e) =>{
                     e.preventDefault()
