@@ -7,19 +7,19 @@
     <title>Peliculas API</title>
 </head>
 <body>
-    <!--El profe no tiene nada despues de las dos ultimas comillas, 
-    en el segundo despues del 0-->
     <style>
     *{
         box-sizing: border-box;
     }
     :root{
-        --primary-color: #90a955;
-        --secondary-color: #ffd9da;
-        --terceary-color: #f3e1dd; 
+        --color-primario: #90a955;
+        --color-secundario: #ffd9da;
+        --color-terciario: #f3e1dd; 
+        --color-cuarto: #cc7178 ;
+        --color-quinto: #d1568d;
     }
     body{
-        background-color: var(--primary-color);
+        background-color: var(--color-cuarto);
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         margin: 0;
     }
@@ -27,19 +27,19 @@
         padding: 16px;
         display: flex;
         justify-content: flex-end;
-        background-color: var(--secondary-color);
+        background-color: var(--color-secundario);
     }
     .search{
-        background-color: var(--secondary-color);
-        border: 5px solid var(--primary-color);
+        background-color: var(--color-terciario);
+        border: 5px solid var(--color-primario);
         border-radius: 50px;
         font-family: Verdana, Geneva, Tahoma, sans-serif;
         font-size: 15px;
-        padding: 10px 16px;
+        padding: 8px 15px;
         color: black;
     }
     .search::placeholder{
-        color: var(--primary-color);
+        color: var(--color-quinto);
     }
     .search:focus{
         outline: none;
@@ -50,48 +50,44 @@
         flex-wrap: wrap;
         justify-content: center;
     }
-    .movie{
-        width: 300px;
+    .personaje{
+        width: 400px;
         margin: 15px;
-        background-color: var(--secondary-color);
-        box-shadow: 0 5px 5px black;
+        background-color: var(--color-secundario);
+        box-shadow: 10px 15px 1px var(--color-primario);
         position: relative;
         overflow:hidden;
-        border-radius: 20px;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
     }
-    .movie img{
-        width: 100%;
+    .personaje img{
+        width: 80%;
+        height: 400px;
+        object-fit: contain;
     }
-    .movie-info{
+    .personaje-info{
         color: black;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 4px;
-        padding: 8px 15px 15px;
-        letter-spacing: 8px;
+        gap: 15px;
+        padding: 0.8px 15px 15px;
+        letter-spacing: 5px;
     }
-    .movie-info h3{
+    .personaje-info h3{
+        color: var(--color-quinto);
         margin-top: 0;
     }
-    .movie-info span{
-        background-color: var(--primary-color);
-        padding: 5px 8px;
-        border-radius: 5px;
-        font-weight: bold;
-    }
-    .movie-info span.blue{
-        color: blue;
-    }
-    .movie-info span.orange{
-        color: orange;
-    }
-    .movie-info span.red{
-        color: red;
+    .personaje-info h1{
+        color: var(--color-primario);
+        margin-top: 0;
     }
     .overview {
         background-color: white;
-        padding: 32px;
+        padding: 15px;
         position: absolute;
         left: 0;
         bottom: 0;
@@ -99,16 +95,16 @@
         max-height: 100%;
         transform: translateY(101%);
         overflow-y: auto;
-        transition: transform 0.3s ease-in;
+        transition: transform 1s ease-in;
     }
-    .movie:hover .overview{
+    .personaje:hover .overview{
         transform: translateY(0);
     }
     </style>
 
     <header>
-        <img src="logo.png" alt="logo" style="width: 100px; height: 70px;">
         <form id="form">
+            <img src="logoo.png" alt="logo" style="width: 200px; height: 40px;">
         <input type="text" id="search" class="search" placeholder="Busca tu pelicula"></form>
     </header>
     <main id="main"></main>
@@ -120,49 +116,40 @@
         const form = document.getElementById('form');
         const search = document.getElementById('search');
 
-        getPersonajes (API_URL)
+        getCharacters (API_URL)
 
-        async function getPersonajes(url){
+        async function getCharacters(url){
             const res = await fetch(url);
             const data = await res.json();
-            showPersonajes(data.results);
+            showCharacters(data.items || data);
         }
-        function showPersonajes(personajes){
+        function showCharacters(characters){
             main.innerHTML = '';
-            movies.forEach((personaje) =>{
-                //esta linea va a poner todoslos elementos al principio, para eso el fprEach, essimilar al "for", pero elfor tiene su inicialzacion, condicion y limitante
-
-                const{name, image, ki, maxKi, race, gender, description} = personaje;
-                //esta linea pone o que nos va a interesardel API que vamos a obtener
-
-                const personajeElements = document.createElement('div');
-                personajeElements.classList.add('movie');
-                personajeElements.innerHTML=`
-                <img src = "${image}" alt="${title}">
-                <div class="movie-info">
-                    <h3>${title}</h3>
-                    <span class = "${getClassByRate(vote_average)}">
-                        ${vote_average}</span>
+            characters.forEach((char) =>{
+                const{id,name, image, ki, maxKi, race, gender, description} = char;
+                const charElement = document.createElement('div');
+                charElement.classList.add('personaje');
+                charElement.innerHTML=`
+                <img src = "${image}" alt="${image}">
+                <div class="personaje-info">
+                    <h1>${id}</h1>
+                    <h3>${name}</h3>
+                    <br>
+                    ${race}
                         </div>
                         <div class = "overview">
-                            <h3>Overview</h3>
-                            ${overview}
-                            </div>`; <!--Agregamos un ;-->
-                    main.appendChild(movieElements);
-            }); }
-            function getClassByRate(vote){
-                if(vote >= 8){
-                    return 'green';
-                }else if(vote >=5){
-                    return 'yellow';
-                }else{
-                    return 'red';
-                }}
+                            <h3>Descripcion</h3>
+                            <p><strong>Ki: </strong> ${ki}</p>
+                            <p><strong>Max Ki: </strong> ${maxKi}</p>
+                            ${description}
+                            </div>` 
+                    main.appendChild(charElement);
+            }) }
                 form.addEventListener('submit', (e) =>{
                     e.preventDefault()
-                    const searchTerm = search.value;
+                    const searchTerm = search.value.toLowerCase();
                     if(searchTerm && searchTerm !== ''){
-                        getMovies(SEARCH_API + searchTerm)
+                        getCharacters(API_URL + `?name=${searchTerm}`)
                         search.value='';
                     }else{window.location.reload();}
                 })
